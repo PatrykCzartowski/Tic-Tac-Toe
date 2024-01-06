@@ -35,6 +35,13 @@ header img {
   object-fit: contain;
   margin: 3rem auto 1rem auto;
   filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.4));
+  background: radial-gradient(
+      circle at top,
+      rgba(38, 175, 234, 0.98),
+      rgba(47, 63, 206, 0.87)
+    );
+    box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.7);
+    border-radius: 10px;
 }
 
 h1 {
