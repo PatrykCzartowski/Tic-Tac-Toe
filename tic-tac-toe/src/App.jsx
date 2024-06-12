@@ -5,6 +5,10 @@ import GameBoard from "./components/GameBoard";
 import Log from "./components/Log";
 import GameOver from "./components/GameOver.jsx";
 import { WINNING_COMBINATIONS } from "./winning-combinations.js";
+import LoginButton from "./components/LoginButton.jsx";
+import CreateAccountButton from "./components/CreateAccountButton.jsx";
+import LoginPanel from "./components/LoginPanel.jsx";
+import RegisterPanel from "./components/RegisterPanel.jsx";
 
 const PLAYERS = {
   X: 'Player 1',
@@ -66,6 +70,8 @@ function deriveWinner(gameBoard, players) {
 function App() {
   const [players, setPlayers] = useState(PLAYERS);
   const [gameTurns, setGameTurns] = useState([]);
+  const [loginButtonState, setLoginButtonState] = useState(false);
+  const [CreateAccountButtonState, setCreateAccountButtonState] = useState(false);
 
   const activePlayer = deriveActivePlayer(gameTurns);
   const gameBoard = deriveGameBoard(gameTurns);
@@ -88,8 +94,31 @@ function App() {
     setGameTurns([]);
   }
 
+  const handleLoginClick = () => {
+    setLoginButtonState(true);
+  }
+
+  const handleCancelLogin = () => {
+    setLoginButtonState(false);
+  }
+
+  const handleCreateAccount = () => {
+    setCreateAccountButtonState(true);
+  }
+
+  const handleCancelCreateAccount = () => {
+    setCreateAccountButtonState(false);
+  }
+
   return (
     <main>
+      { loginButtonState && <LoginPanel onLoginCancelButton={handleCancelLogin}/> }
+      <div id="buttons-containter">
+        <LoginButton onLoginButtonClicked={handleLoginClick}/>
+        <p className="buttons-divider"> or </p>
+        <CreateAccountButton onCreateAccountButton={handleCreateAccount}/>
+        { CreateAccountButtonState && <RegisterPanel onCancelCreateAccount={handleCancelCreateAccount}/>}
+      </div>
       <div id="game-container">
         <ol id="players" className="highlight-player">
           <Player
