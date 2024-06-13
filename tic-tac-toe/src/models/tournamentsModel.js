@@ -1,4 +1,5 @@
-import { Pool } from 'pg';
+import pkg from 'pg';
+const { Pool } = pkg;
 
 const pool = new Pool({
     user: 'ladmin',
@@ -8,10 +9,10 @@ const pool = new Pool({
     port: 5432,
 });
 
-const getPlayers = async () => {
+export const getTournaments = async () => {
     try {
         return await new Promise(function (resolve, reject) {
-            pool.query('SELECT * FROM players', (error, results) => {
+            pool.query('SELECT * FROM tournaments', (error, results) => {
                 if(error) {
                     reject(error);
                 }
@@ -28,18 +29,18 @@ const getPlayers = async () => {
     }
 };
 
-const createPlayer = async (body) => {
+export const createTournament = async (body) => {
     return new Promise(function (resolve, reject) {
-        const { name, surname, ranking, id_account } = body;
-        pool.query('INSERT INTO players (name, surname, ranking, id_account) VALUES ($1, $2, $3, $4) RETURNING *',
-            [name, surname, ranking, id_account],
+        const { name , is_active, prize } = body;
+        pool.query('INSERT INTO tournaments (name, is_active, prize) VALUES ($1, $2, $3) RETURNING *',
+            [name, is_active, prize],
             (error, results) => {
                 if(error) {
                     reject(error);
                 }
                 if(results && results.rows) {
                     resolve(
-                        `A new player has been added: ${JSON.stringify(results.rows[0])}`
+                        `A new Tournament has been added: ${JSON.stringify(results.rows[0])}`
                     );
                 } else {
                     reject(new Error('No results found'));
@@ -49,41 +50,34 @@ const createPlayer = async (body) => {
     });
 };
 
-const deletePlayer = async (id) => {
+export const deleteTournament = async (id) => {
     return new Promise(function (resolve, reject) {
-        pool.query('DELETE FROM players WHERE id = $1', 
+        pool.query('DELETE FROM tournaments WHERE id = $1', 
             [id], 
             (error, results) => {
             if(error) {
                 reject(error);
             }
-            resolve(`player deleted with ID: ${id}`);
+            resolve(`Tournament deleted with ID: ${id}`);
         });
     });
 };
 
-const updatePlayer = async (id, body) => {
+export const updateTournament = async (id, body) => {
     return new Promise(function (resolve, reject) {
-        const { name, surname, ranking, id_account } = body;
-        pool.query('UPDATE players SET name = $1, surname = $2, ranking = $3, id_account = $4 WHERE id = $5 RETURNING *',
-            [name, surname, ranking, id_account, id],
+        const { name, is_active, prize } = body;
+        pool.query('UPDATE tournaments SET name = $1, is_active = $2, prize = $3 WHERE id = $4 RETURNING *',
+            [name, is_active, prize, id],
             (error, results) => {
                 if(error) {
                     reject(error);
                 }
                 if(results && results.rows) {
-                    resolve(`Player updated: ${JSON.stringify(results.rows[0])}`);
+                    resolve(`Tournament updated: ${JSON.stringify(results.rows[0])}`);
                 } else {
                     reject(new Error('No results found'));
                 }
             }
         );
     });
-};
-
-module.exports = {
-    getPlayers,
-    createPlayer,
-    deletePlayer,
-    updatePlayer
 };

@@ -1,4 +1,5 @@
-import { Pool } from 'pg';
+import pkg from 'pg';
+const { Pool } = pkg;
 
 const pool = new Pool({
     user: 'ladmin',
@@ -8,10 +9,10 @@ const pool = new Pool({
     port: 5432,
 });
 
-const getAccounts = async () => {
+export const getGames = async () => {
     try {
         return await new Promise(function (resolve, reject) {
-            pool.query('SELECT * FROM accounts', (error, results) => {
+            pool.query('SELECT * FROM games', (error, results) => {
                 if(error) {
                     reject(error);
                 }
@@ -28,10 +29,10 @@ const getAccounts = async () => {
     }
 };
 
-const createAccount = async (body) => {
+export const createGame = async (body) => {
     return new Promise(function (resolve, reject) {
-        const { username, password, passwd_salt } = body;
-        pool.query('INSERT INTO accounts (username, password, passwd_salt) VALUES ($1, $2, $3) RETURNING *',
+        const { id_player1, id_player2, id_torunament, result} = body;
+        pool.query('INSERT INTO accounts (id_player1, id_player2, id_torunament, result) VALUES ($1, $2, $3, $4) RETURNING *',
             [username, password, passwd_salt],
             (error, results) => {
                 if(error) {
@@ -39,7 +40,7 @@ const createAccount = async (body) => {
                 }
                 if(results && results.rows) {
                     resolve(
-                        `A new account has been added: ${JSON.stringify(results.rows[0])}`
+                        `A new Game has been added: ${JSON.stringify(results.rows[0])}`
                     );
                 } else {
                     reject(new Error('No results found'));
@@ -49,41 +50,34 @@ const createAccount = async (body) => {
     });
 };
 
-const deleteAccount = async (id) => {
+export const deleteGame = async (id) => {
     return new Promise(function (resolve, reject) {
-        pool.query('DELETE FROM accounts WHERE id = $1', 
+        pool.query('DELETE FROM games WHERE id = $1', 
             [id], 
             (error, results) => {
             if(error) {
                 reject(error);
             }
-            resolve(`Account deleted with ID: ${id}`);
+            resolve(`Game deleted with ID: ${id}`);
         });
     });
 };
 
-const updateAccount = async (id, body) => {
+export const updateGame = async (id, body) => {
     return new Promise(function (resolve, reject) {
-        const { username, password, passwd_salt } = body;
-        pool.query('UPDATE accounts SET username = $1, password = $2, passwd_salt = $3 WHERE id = $4 RETURNING *',
-            [username, password, passwd_salt, id],
+        const { id_player1, id_player2,id_torunament, result } = body;
+        pool.query('UPDATE games SET id_player1 = $1, id_player2 = $2, id_torunament = $3, result = $4 WHERE id = $5 RETURNING *',
+            [id_player1, id_player2, id_torunament, result, id],
             (error, results) => {
                 if(error) {
                     reject(error);
                 }
                 if(results && results.rows) {
-                    resolve(`Account updated: ${JSON.stringify(results.rows[0])}`);
+                    resolve(`Game updated: ${JSON.stringify(results.rows[0])}`);
                 } else {
                     reject(new Error('No results found'));
                 }
             }
         );
     });
-};
-
-module.exports = {
-    getAccounts,
-    createAccount,
-    deleteAccount,
-    updateAccount
 };
