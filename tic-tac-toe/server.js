@@ -4,9 +4,10 @@ const app = express()
 const port = 3001
 
 import { getAccounts, createAccount, deleteAccount, updateAccount } from './src/models/accountsModel.js';
-import { getPlayers, createPlayer, deletePlayer, updatePlayer } from './src/models/playersModel.js';
-import { getTournaments, createTournament, deleteTournament, updateTournament } from './src/models/tournamentsModel.js';
-import { getGames, createGame, deleteGame, updateGame } from './src/models/gamesModel.js';
+import { getPlayers, createPlayer, deletePlayer, updatePlayer, getPlayerById } from './src/models/playersModel.js';
+import { getTournaments, createTournament, deleteTournament, updateTournament, getTournamentById } from './src/models/tournamentsModel.js';
+import { getGames, createGame, deleteGame, updateGame, getGamesById } from './src/models/gamesModel.js';
+import { getT_has_P, createT_has_P, deleteT_has_P, updateT_has_P } from './src/models/tournamentsHasPlayersModel.js';
 
 app.use(express.json())
 app.use(function (req, res, next) {
@@ -36,6 +37,17 @@ app.get('/players', (req, res) => {
   })
 })
 
+app.get('/players/:id', (req, res) => {
+  getPlayerById(req.params.id)
+  .then(response => {
+    res.status(200).send(response);
+  })
+  .catch(error => {
+    res.status(500).send(error);
+  })
+})
+
+
 app.get('/tournaments', (req, res) => {
   getTournaments()
   .then(response => {
@@ -46,8 +58,48 @@ app.get('/tournaments', (req, res) => {
   })
 })
 
+app.get('/tournaments/:id', (req, res) => {
+  getTournamentById(req.params.id)
+  .then(response => {
+    res.status(200).send(response);
+  })
+  .catch(error => {
+    res.status(500).send(error);
+  })
+})
+
 app.get('/games', (req, res) => {
   getGames()
+  .then(response => {
+    res.status(200).send(response);
+  })
+  .catch(error => {
+    res.status(500).send(error);
+  })
+})
+
+app.get('/games/:id', (req, res) => {
+  getGamesById(req.params.id)
+  .then(response => {
+    res.status(200).send(response);
+  })
+  .catch(error => {
+    res.status(500).send(error);
+  })
+})
+
+app.get('/tournament_has_players', (req, res) => {
+  getT_has_P()
+  .then(response => {
+    res.status(200).send(response);
+  })
+  .catch(error => {
+    res.status(500).send(error);
+  })
+})
+
+app.post('/tournament_has_players', (req, res) => {
+  createT_has_P(req.body)
   .then(response => {
     res.status(200).send(response);
   })
@@ -96,6 +148,16 @@ app.post('/games', (req, res) => {
   })
 })
 
+app.delete('/tournament_has_players/:id', (req, res) => {
+  deleteT_has_P(req.params.id)
+  .then(response => {
+    res.status(200).send(response);
+  })
+  .catch(error => {
+    res.status(500).send(error);
+  })
+})
+
 app.delete('/accounts/:id', (req, res) => {
   deleteAccount(req.params.id)
   .then(response => {
@@ -128,6 +190,16 @@ app.delete('/tournaments/:id', (req, res) => {
 
 app.delete('/games/:id', (req, res) => {
   deleteGame(req.params.id)
+  .then(response => {
+    res.status(200).send(response);
+  })
+  .catch(error => {
+    res.status(500).send(error);
+  })
+})
+
+app.put('/tournament_has_players/:id', (req, res) => {
+  updateT_has_P(req.params.id, req.body)
   .then(response => {
     res.status(200).send(response);
   })

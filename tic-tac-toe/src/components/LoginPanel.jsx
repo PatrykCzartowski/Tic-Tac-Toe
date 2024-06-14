@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import sha256 from 'crypto-js/sha256';
 
-export default function LoginPanel({ onLoginCancelButton }) {
+export default function LoginPanel({ onLoginCancelButton, onValidAdmin, onValidUser }) {
 
     const [accounts, setAccounts] = useState();
     const [isProvidedAccountValid, setIsProvidedAccountValid] = useState(null);
@@ -29,10 +29,13 @@ export default function LoginPanel({ onLoginCancelButton }) {
             if (account.username === providedUsername && account.password === sha256(providedPassword).toString()) {
                 setIsProvidedAccountValid(true);
                 if(account.is_admin === true){
-                    setIsAdmin(true);
+                    onValidAdmin(account.id);
+                } else {
+                    onValidUser();
                 }
             }
         }
+        onLoginCancelButton();
     };
 
     return (

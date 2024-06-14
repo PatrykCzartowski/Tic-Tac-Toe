@@ -360,6 +360,7 @@ ol {
   background-color: #46432f;
   font-size: 1.5rem;
   cursor: pointer;
+  border-radius: 4px;
 }
 
 #login-form input {
@@ -376,6 +377,7 @@ ol {
   margin-bottom:5rem;
   border: 2px solid #fcd256;
   color: #fcd256;
+  border-radius: 4px;
 }
 
 #register-panel {
@@ -410,6 +412,7 @@ ol {
   background-color: #46432f;
   font-size: 1.5rem;
   cursor: pointer;
+  border-radius: 4px;
 }
 
 #register-form input {
@@ -426,6 +429,7 @@ ol {
   margin-bottom:5rem;
   border: 2px solid #fcd256;
   color: #fcd256;
+  border-radius: 4px;
 }
 
 #register-panel-background {
@@ -448,6 +452,106 @@ ol {
   background-color: rgba(0,0,0,0.5); 
   z-index: 1000;
 }
+
+#admin-panel-background {
+  position: fixed; 
+  top: 0; 
+  left: 0; 
+  width: 100%; 
+  height: 100%; 
+  background-color: rgba(0,0,0,0.5); 
+  z-index: 1000;
+}
+
+#admin-panel {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 50rem;
+  height: 50rem;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  background: linear-gradient(#383624, #282617);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.25);
+  overflow: auto;
+}
+
+#admin-panel h2 {
+  text-align: center;
+  margin-bottom:5rem;
+  border: 2px solid #fcd256;
+  color: #fcd256;
+  border-radius: 4px;
+}
+
+#admin-panel button {
+  margin-top:1rem;
+  border: 2px solid #fcd256;
+  color: #fcd256;
+  background-color: #46432f;
+  font-size: 1.5rem;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.table-box {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.table-box tr {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  border: 1px solid #fcd256;
+}
+
+.table-box th {
+  background-color: #fcd256;
+  color: #3f3b00;
+  font-size: 1.3rem;
+  padding: 0.2rem;
+  padding-left: 0.5rem;
+  border: 1px solid #fcd256;
+}
+
+.table-box .th-last {
+  text-align: right;
+}
+
+.table-box .th-first {
+  text-align: left;
+}
+
+.admin-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+#admin-panel .cancel-button {
+  margin-top: 20px;
+}
+
+#admin-panel form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  color: #fff;
+  padding: 10px;
+
+}
+
 @keyframes slide-in-from-left {
   0% {
     opacity: 0;

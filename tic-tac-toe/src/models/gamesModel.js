@@ -29,6 +29,27 @@ export const getGames = async () => {
     }
 };
 
+export const getGamesById = async (id) => {
+    try {
+        return await new Promise(function (resolve, reject) {
+            pool.query('SELECT * FROM games WHERE id = $1', [id], (error, results) => {
+                if(error) {
+                    reject(error);
+                }
+                if(results && results.rows) {
+                    resolve(results.rows);
+                } else {
+                    reject(new Error('No results found'));
+                }
+            }
+        );
+    });
+    } catch (error_1) {
+        console.log(error_1);
+        throw new Error('Internal server error');
+    }
+};
+
 export const createGame = async (body) => {
     return new Promise(function (resolve, reject) {
         const { id_player1, id_player2, id_torunament, result} = body;

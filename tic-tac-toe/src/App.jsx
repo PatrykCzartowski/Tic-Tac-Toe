@@ -9,6 +9,8 @@ import LoginButton from "./components/LoginButton.jsx";
 import CreateAccountButton from "./components/CreateAccountButton.jsx";
 import LoginPanel from "./components/LoginPanel.jsx";
 import RegisterPanel from "./components/RegisterPanel.jsx";
+import AdminPanel from "./components/adminPanel.jsx";
+import UserPanel from "./components/userPanel.jsx";
 
 const PLAYERS = {
   X: 'Player 1',
@@ -72,6 +74,10 @@ function App() {
   const [gameTurns, setGameTurns] = useState([]);
   const [loginButtonState, setLoginButtonState] = useState(false);
   const [CreateAccountButtonState, setCreateAccountButtonState] = useState(false);
+  const [isAdminLogged, setIsAdminLogged] = useState(false);
+  const [isUserLogged, setIsUserLogged] = useState(false);
+
+  const [userId, setUserId] = useState(null);
 
   const activePlayer = deriveActivePlayer(gameTurns);
   const gameBoard = deriveGameBoard(gameTurns);
@@ -110,11 +116,31 @@ function App() {
     setCreateAccountButtonState(false);
   }
 
+  const handleAdminLogin = () => {
+    setIsAdminLogged(true);
+  }
+
+  const handleUserLogin = (id) => {
+    setIsUserLogged(true);
+    console.log(id);
+    setUserId(id);
+  }
+
+  const handleAdminPanelCancelButton = () => {
+    setIsAdminLogged(false);
+  }
+
+  const handleUserPanelCancelButton = () => {
+    setIsUserLogged(false);
+  }
+
   return (
     <main>
-      { loginButtonState && <LoginPanel onLoginCancelButton={handleCancelLogin}/> }
+      { isAdminLogged && <AdminPanel onAdminPanelCancelButton={handleAdminPanelCancelButton}/>}
+      { isUserLogged && <UserPanel onUserPanelCancelButton={handleUserPanelCancelButton} userId={userId}/>}
+      { loginButtonState && <LoginPanel onLoginCancelButton={handleCancelLogin} onValidAdmin={handleAdminLogin} onValidUser={handleUserLogin}/> }
       <div id="buttons-containter">
-        <LoginButton onLoginButtonClicked={handleLoginClick}/>
+        <LoginButton onLoginButtonClicked={handleLoginClick} />
         <p className="buttons-divider"> or </p>
         <CreateAccountButton onCreateAccountButton={handleCreateAccount}/>
         { CreateAccountButtonState && <RegisterPanel onCancelCreateAccount={handleCancelCreateAccount}/>}

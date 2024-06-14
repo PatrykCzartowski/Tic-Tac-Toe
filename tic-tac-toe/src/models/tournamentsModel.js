@@ -29,6 +29,26 @@ export const getTournaments = async () => {
     }
 };
 
+export const getTournamentById = async (id) => {
+    try {
+        return await new Promise(function (resolve, reject) {
+            pool.query('SELECT * FROM tournaments WHERE id = $1', [id], (error, results) => {
+                if(error) {
+                    reject(error);
+                }
+                if(results && results.rows) {
+                    resolve(results.rows);
+                } else {
+                    reject(new Error('No results found'));
+                }
+            });
+    });
+    } catch (error_1) {
+        console.log(error_1);
+        throw new Error('Internal server error');
+    }
+};
+
 export const createTournament = async (body) => {
     return new Promise(function (resolve, reject) {
         const { name , is_active, prize } = body;
